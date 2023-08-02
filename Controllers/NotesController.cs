@@ -33,16 +33,18 @@ public async Task<ActionResult<IEnumerable<Note>>> GetNotes()
         // GET: api/Notes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Note>> GetNote(int id)
+    {
+        var note = await _context.Notes
+            .Include(n => n.Tags) // Include the Tags collection
+            .FirstOrDefaultAsync(n => n.Id == id);
+
+        if (note == null)
         {
-            var note = await _context.Notes.FindAsync(id);
-
-            if (note == null)
-            {
-                return NotFound();
-            }
-
-            return note;
+            return NotFound();
         }
+
+        return note;
+    }
 
         // POST: api/Notes
         [HttpPost]

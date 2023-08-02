@@ -38,60 +38,65 @@ public class TagsController : ControllerBase
         return tag;
     }
 
-public class TagCreationDto
-{
-    public int NoteId { get; set; }
-    public string Name { get; set; }
-}
+    public class TagCreationDto
+    {
+        public int NoteId { get; set; }
+        public string Name { get; set; }
+    }
 
 
     [HttpPost]
-public async Task<ActionResult<Tag>> PostTag([FromBody] TagCreationDto tagDto)
-{
-    var note = await _context.Notes.FindAsync(tagDto.NoteId);
-    if (note == null)
+    public async Task<ActionResult<Tag>> PostTag([FromBody] TagCreationDto tagDto)
     {
-        return NotFound("Note with the specified ID not found.");
+        var note = await _context.Notes.FindAsync(tagDto.NoteId);
+        if (note == null)
+        {
+            return NotFound("Note with the specified ID not found.");
+        }
+
+        var tag = new Tag { Name = tagDto.Name };
+        note.Tags.Add(tag);
+
+        await _context.SaveChangesAsync();
+
+        // Instead of returning the entire list of tags, return only the newly created tag
+        return CreatedAtAction("GetTag", new { id = tag.Id }, tag);
     }
 
-    var tag = new Tag { Name = tagDto.Name };
-    note.Tags.Add(tag);
-
-    await _context.SaveChangesAsync();
-
-    // Instead of returning the entire list of tags, return only the newly created tag
-    return CreatedAtAction("GetTag", new { id = tag.Id }, tag);
-}
-
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutTag(int id, [FromBody] Tag tag)
+    public class TagUpdateDto
     {
-        if (id != tag.Id)
+        public string Name { get; set; }
+    }
+
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> PatchTag(int id, [FromBody] TagUpdateDto tagUpdateDto)
+    {
+        var tag = await _context.Tags.FindAsync(id);
+        if (tag == null)
         {
-            return BadRequest();
+            return NotFound();
         }
 
-        _context.Entry(tag).State = EntityState.Modified;
+        if (tagUpdateDto.Name != null)
+        {
+            tag.Name = tagUpdateDto.Name;
+        }
 
-        try
+        // Apply changes to associated notes' Tags collection
+        foreach (var note in tag.Notes)
         {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!TagExists(id))
+            if (tagUpdateDto.Name != null)
             {
-                return NotFound();
-            }
-            else
-            {
-                throw;
+                note.Tags.First(t => t.Id == tag.Id).Name = tagUpdateDto.Name;
             }
         }
+
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTag(int id)
@@ -100,6 +105,12 @@ public async Task<ActionResult<Tag>> PostTag([FromBody] TagCreationDto tagDto)
         if (tag == null)
         {
             return NotFound();
+        }
+
+        // Remove the tag from associated notes' Tags collection
+        foreach (var note in tag.Notes.ToList())
+        {
+            note.Tags.Remove(tag);
         }
 
         _context.Tags.Remove(tag);
