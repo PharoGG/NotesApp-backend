@@ -21,10 +21,14 @@ namespace NotesAppBackend.Controllers
 
         // GET: api/Notes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Note>>> GetNotes()
-        {
-            return await _context.Notes.ToListAsync();
-        }
+public async Task<ActionResult<IEnumerable<Note>>> GetNotes()
+{
+    var notes = await _context.Notes
+        .Include(n => n.Tags) // Include the Tags collection
+        .ToListAsync();
+
+    return notes;
+}
 
         // GET: api/Notes/5
         [HttpGet("{id}")]

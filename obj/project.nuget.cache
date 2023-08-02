@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "sUmJsCWVvmPUidQU9ctyKfTJmb5Ob8HidYGTGTKeCh2Du0NLvTz5avp1LZoGb4OOyF8EOwrllGDYly0n7uoMog==",
+  "dgSpecHash": "O4C8ijwGX6PNcQKNYMP+EPCo7mJia7PdiGs+KchfszR7d7xRpXeUVEHu5/SY7ERYi85517EB1mgPp7TIH25dPQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\timyr\\OneDrive\\Desktop\\NotesApp\\NotesAppBackend\\NotesAppBackend.csproj",
   "expectedPackageFiles": [
@@ -84,7 +84,7 @@
     "C:\\Users\\timyr\\.nuget\\packages\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
     "C:\\Users\\timyr\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\timyr\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
-    "C:\\Users\\timyr\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\timyr\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\timyr\\.nuget\\packages\\newtonsoft.json.bson\\1.0.1\\newtonsoft.json.bson.1.0.1.nupkg.sha512",
     "C:\\Users\\timyr\\.nuget\\packages\\npgsql\\7.0.4\\npgsql.7.0.4.nupkg.sha512",
     "C:\\Users\\timyr\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\7.0.4\\npgsql.entityframeworkcore.postgresql.7.0.4.nupkg.sha512",

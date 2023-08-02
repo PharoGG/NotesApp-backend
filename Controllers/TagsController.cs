@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -43,7 +46,6 @@ public class TagCreationDto
 
 
     [HttpPost]
-[HttpPost]
 public async Task<ActionResult<Tag>> PostTag([FromBody] TagCreationDto tagDto)
 {
     var note = await _context.Notes.FindAsync(tagDto.NoteId);
@@ -57,12 +59,9 @@ public async Task<ActionResult<Tag>> PostTag([FromBody] TagCreationDto tagDto)
 
     await _context.SaveChangesAsync();
 
+    // Instead of returning the entire list of tags, return only the newly created tag
     return CreatedAtAction("GetTag", new { id = tag.Id }, tag);
 }
-
-
-
-
 
 
     [HttpPut("{id}")]
